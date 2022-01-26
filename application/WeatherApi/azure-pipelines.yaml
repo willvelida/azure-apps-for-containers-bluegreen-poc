@@ -37,15 +37,39 @@ stages:
               resourceGroupName: $(resourceGroupName)
               slotName: blue
 
+          - task: AzureAppServiceManage@0
+            inputs:
+              azureSubscription: $(azureSubscription)
+              WebAppName: $(appName)
+              ResourceGroupName: $(resourceGroupName)
+              SourceSlot: blue
+              SwapWithProduction: true
+
+  - stage: Manual Validation
+    dependsOn: Build 
+    jobs:
+      - job: WaitForValidation
+        displayName: 'Validate Blue Slot'
+        pool: server
+        timeoutInMinutes: 4320
+        steps:
           - task: ManualValidation@0
-            displayName: 'Manual Validation Before Switch to Green'
+            timeoutInMinutes: 1440
             inputs:
               notifyUsers: |
                 willvelida@hotmail.co.uk
                 willvelida@microsoft.com
-              instructions: 'Please validate before switching to Green'
+              instructions: 'Please validate blue slot before switching to green'
               onTimeout: 'reject'
-
+  
+  - stage: Deploy to Green
+    dependsOn: Manual Validation
+    jobs:
+      - job: Deploy
+        displayName: Deploy to Green Slot
+        pool:
+          vmImage: $(vmImageName)
+        steps:
           - task: AzureAppServiceManage@0
             inputs:
               azureSubscription: $(azureSubscription)
