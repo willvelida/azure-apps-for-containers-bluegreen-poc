@@ -2,12 +2,19 @@ trigger:
   - main
 
 variables:
-  vmImageName: 'ubuntu-latest'
-  containerRegistry: 'containerRegistryConnection'
-  imageRepository: 'weatherapi'
-  tag: $(Build.BuildId)
-  resourceGroupName: 'bluegreen-poc-rg'
-  appName: 'velidacontainerapp'
+  - group: 'bluegreen-poc-variables'
+  - name: vmImageName
+    value: 'ubuntu-latest'
+  - name: containerRegistry
+    value: 'containerRegistryConnection'
+  - name: imageRepository 
+    value: 'weatherapi'
+  - name: tag
+    value: $(Build.BuildId)
+  - name: resourceGroupName 
+    value: 'bluegreen-poc-rg'
+  - name: appName 
+    value: 'velidacontainerapp'
 
 stages:
   - stage: Build
@@ -45,7 +52,7 @@ stages:
               SourceSlot: blue
               SwapWithProduction: true
 
-  - stage: Manual Validation
+  - stage: ManualValidation
     dependsOn: Build 
     jobs:
       - job: WaitForValidation
@@ -62,7 +69,7 @@ stages:
               instructions: 'Please validate blue slot before switching to green'
               onTimeout: 'reject'
   
-  - stage: Deploy to Green
+  - stage: DeployToGreen
     dependsOn: Manual Validation
     jobs:
       - job: Deploy
