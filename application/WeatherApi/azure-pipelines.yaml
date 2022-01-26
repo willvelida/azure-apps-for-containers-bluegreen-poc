@@ -70,7 +70,7 @@ stages:
               onTimeout: 'reject'
   
   - stage: DeployToGreen
-    dependsOn: Manual Validation
+    dependsOn: ManualValidation
     jobs:
       - job: Deploy
         displayName: Deploy to Green Slot
