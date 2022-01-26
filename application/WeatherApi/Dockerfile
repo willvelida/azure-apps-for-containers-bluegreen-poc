@@ -2,7 +2,7 @@
 WORKDIR /src
 COPY WeatherApi.csproj .
 RUN dotnet restore
-COPY ..
+COPY . .
 RUN dotnet publish -c release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
