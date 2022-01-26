@@ -14,7 +14,7 @@ variables:
   - name: resourceGroupName 
     value: 'bluegreen-poc-rg'
   - name: appName 
-    value: 'velidacontainerapp'
+    value: 'velidacontainerwebapp'
 
 stages:
   - stage: Build
