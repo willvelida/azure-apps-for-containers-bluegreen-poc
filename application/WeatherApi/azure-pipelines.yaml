@@ -44,14 +44,6 @@ stages:
               resourceGroupName: $(resourceGroupName)
               slotName: blue
 
-          - task: AzureAppServiceManage@0
-            inputs:
-              azureSubscription: $(azureSubscription)
-              WebAppName: $(appName)
-              ResourceGroupName: $(resourceGroupName)
-              SourceSlot: blue
-              SwapWithProduction: true
-
   - stage: ManualValidation
     dependsOn: Build 
     jobs:
