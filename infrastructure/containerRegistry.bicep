@@ -11,4 +11,7 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' =
   properties: {
     adminUserEnabled: true
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
 }

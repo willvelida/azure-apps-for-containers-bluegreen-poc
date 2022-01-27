@@ -11,6 +11,9 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   properties: {
     serverFarmId: serverFarmId
   }
+  identity: {
+    type: 'SystemAssigned'
+  }
 
   resource blueSlot 'slots' = {
     name: appServiceSlotName
