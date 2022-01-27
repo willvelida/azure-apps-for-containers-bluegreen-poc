@@ -1,3 +1,4 @@
+@description('Name of the app service plan')
 param appServiceName string
 param appServiceLocation string
 param appServiceSlotName string
