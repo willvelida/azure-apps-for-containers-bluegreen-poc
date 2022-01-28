@@ -10,6 +10,14 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   location: appServiceLocation
   properties: {
     serverFarmId: serverFarmId
+    siteConfig: {
+      appSettings: [
+        {
+          name: 'WEBSITES_PORT'
+          value: '8000'
+        }
+      ]
+    }
   }
   identity: {
     type: 'SystemAssigned'
@@ -20,6 +28,14 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     location: appServiceLocation
     properties: {
       serverFarmId: serverFarmId
+      siteConfig: {
+        appSettings: [
+          {
+            name: 'WEBSITES_PORT'
+            value: '8000'
+          }
+        ]
+      }
     }
   }
 }
