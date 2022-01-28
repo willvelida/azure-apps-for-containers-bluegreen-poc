@@ -6,8 +6,8 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["HelloBlueGreenWeb/HelloBlueGreenWeb.csproj", "HelloBlueGreenWeb/"]
-RUN dotnet restore "HelloBlueGreenWeb/HelloBlueGreenWeb.csproj"
+COPY ["HelloBlueGreenWeb.csproj", "HelloBlueGreenWeb/"]
+RUN dotnet restore "HelloBlueGreenWeb.csproj"
 COPY . .
 WORKDIR "/src/HelloBlueGreenWeb"
 RUN dotnet build "HelloBlueGreenWeb.csproj" -c Release -o /app/build
