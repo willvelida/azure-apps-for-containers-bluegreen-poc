@@ -3,7 +3,7 @@ name: Build and Deploy Container Image to App Service
 on:
   push:
     paths:
-      - 'application/*'
+      - 'application/HelloBlueGreenWeb/*'
 
   workflow_dispatch:
 
