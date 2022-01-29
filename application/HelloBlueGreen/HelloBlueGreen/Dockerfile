@@ -3,7 +3,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-COPY ["HelloBlueGreen.csproj" "HelloBlueGreen/"]
+COPY ["HelloBlueGreen.csproj", "HelloBlueGreen/"]
 RUN dotnet restore "HelloBlueGreen/HelloBlueGreen.csproj"
 
 COPY . .
