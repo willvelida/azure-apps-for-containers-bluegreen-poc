@@ -2,7 +2,7 @@
 WORKDIR /app
 EXPOSE 80
 
-COPY *.csproj ./
+COPY *.csproj .
 RUN dotnet restore
 
 COPY . .
