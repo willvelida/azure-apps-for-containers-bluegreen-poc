@@ -1,8 +1,9 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
-COPY *.csproj .
+COPY HelloBlueGreen.csproj .
 RUN dotnet restore
 
 COPY . .
