@@ -3,11 +3,11 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-COPY ./application/HelloBlueGreen/HelloBlueGreen/HelloBlueGreen.csproj .
-RUN dotnet restore
+COPY ["HelloBlueGreen.csproj" "HelloBlueGreen/"]
+RUN dotnet restore "HelloBlueGreen/HelloBlueGreen.csproj"
 
 COPY . .
-RUN dotnet publish -c Release -o out
+RUN dotnet publish "HelloBlueGreen.csproj" -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
