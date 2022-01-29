@@ -3,13 +3,18 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-COPY ["HelloBlueGreen.csproj", "HelloBlueGreen/"]
-RUN dotnet restore "HelloBlueGreen/HelloBlueGreen.csproj"
-
+WORKDIR /src
+COPY *.sln ./
+COPY HelloBlueGreen.csproj, HelloBlueGreen/
+RUN dotnet restore HelloBlueGreen/HelloBlueGreen.csproj
 COPY . .
-RUN dotnet publish "HelloBlueGreen.csproj" -c Release -o out
+WORKDIR /src/HelloBlueGreen
+RUN dotnet build -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish "HelloBlueGreen.csproj" -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
-COPY --from=build /app/out .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "HelloBlueGreen.dll"]
