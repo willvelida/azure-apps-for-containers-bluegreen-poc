@@ -12,7 +12,7 @@ defaults:
     working-directory: ./HelloBlueGreenWebApp/HelloBlueGreenWebApp
 
 jobs:
-  build-and-deploy:
+  build-container-image:
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout GitHub Action'
@@ -32,3 +32,40 @@ jobs:
     - run: |
         docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
+
+  deploy-to-blue-slot:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@main
+      
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Deploy to Blue Slot'
+      uses: azure/webapps-deploy@2
+      with:
+        app-name: 'velidacontainerwebapp'
+        images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
+        slot: 'blue'
+
+  deploy-to-green-slot:
+    runs-on: ubuntu-latest
+    environment: Dev
+    needs: deploy-to-blue-slot
+    steps:
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@main
+      
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - uses: Azure/cli@v1
+        name: Swap to green slot
+        with:
+          inlineScript: |
+            az webapp deployment slot swap --slot 'production' --resource-group ${{ secrets.AZURE_RG }} --target-slot 'blue' --name 'velidacontainerwebapp'
