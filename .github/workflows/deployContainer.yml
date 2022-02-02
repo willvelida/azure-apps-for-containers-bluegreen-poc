@@ -50,7 +50,7 @@ jobs:
       with:
         app-name: 'velidacontainerwebapp'
         images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
-        slot: 'blue'
+        slot-name: 'blue'
 
   deploy-to-green-slot:
     runs-on: ubuntu-latest
