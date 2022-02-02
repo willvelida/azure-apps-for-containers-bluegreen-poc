@@ -21,10 +21,11 @@ jobs:
     
     - name: 'Build and Push Image to ACR'
       uses: azure/docker-login@v1
+      working-directory: ./HelloBlueGreenWebApp/HelloBlueGreenWebApp
       with:
         login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }} - < ./HelloBlueGreenWebApp/HelloBlueGreenWebApp/Dockerfile
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
