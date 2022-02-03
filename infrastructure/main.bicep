@@ -4,6 +4,8 @@ param dockerUsername string
 param appServicePlanName string
 param appServiceName string
 
+var appServiceSlotName = '/blue'
+
 param location string = resourceGroup().location
 
 module containerRegistry 'containerRegistry.bicep' = {
@@ -12,6 +14,8 @@ module containerRegistry 'containerRegistry.bicep' = {
     registryLocation: location 
     registryName: acrName
     registrySku: acrSku
+    greenSlotName: appServiceName
+    blueSlotName: appServiceSlotName
   }
 }
 
@@ -29,7 +33,7 @@ module appService 'appService.bicep' = {
     appServiceLocation: location 
     appServiceName: appServiceName
     serverFarmId: appServicePlan.outputs.appServicePlanId
-    appServiceSlotName: '/blue'
+    appServiceSlotName: appServiceSlotName
     acrName: acrName
     dockerUsername: dockerUsername
   }
