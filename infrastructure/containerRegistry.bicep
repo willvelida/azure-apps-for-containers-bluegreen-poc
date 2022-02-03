@@ -43,28 +43,3 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
     principalType: 'ServicePrincipal'
   }
 }
-
-resource acrPullRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: '7f951dda-4ed3-4680-a7ca-43fe172d538d'
-  scope: containerRegistry
-}
-
-resource greenAcrPullRoleAssingment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  scope: containerRegistry
-  name: guid(containerRegistry.id, greenSlot.id, acrPullRoleDefinition.id)
-  properties: {
-    principalId: greenSlot.identity.principalId
-    roleDefinitionId: acrPullRoleDefinition.id
-    principalType: 'ServicePrincipal'
-  }
-}
-
-resource blueAcrPullRoleAssingment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  scope: containerRegistry
-  name: guid(containerRegistry.id, blueSlot.id, acrPullRoleDefinition.id)
-  properties: {
-    principalId: blueSlot.identity.principalId
-    roleDefinitionId: acrPullRoleDefinition.id
-    principalType: 'ServicePrincipal'
-  }
-}
