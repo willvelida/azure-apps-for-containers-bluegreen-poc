@@ -25,8 +25,8 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' =
   }
 }
 
-resource contributorRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
-  name: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+resource ownerRoleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
+  name: '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
   scope: containerRegistry
 }
 
@@ -36,10 +36,10 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
-  name: guid(subscription().id, managedIdentity.id, contributorRoleDefinition.id)
+  name: guid(subscription().id, managedIdentity.id, ownerRoleDefinition.id)
   properties: {
     principalId: managedIdentity.properties.principalId
-    roleDefinitionId: contributorRoleDefinition.id
+    roleDefinitionId: ownerRoleDefinition.id
     principalType: 'ServicePrincipal'
   }
 }
