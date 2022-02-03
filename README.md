@@ -1,6 +1,6 @@
 # Blue/Green Deployments with Azure Web Apps for Containers
 
-This sample shows you how you can implement Blue/Green deployments for Azure Web Apps for Containers.
+This sample shows you how you can implement Blue/Green deployments for Azure Web Apps for Containers using GitHub Actions. This sample also shows you how you can create a Azure Container Registry, Linux App Service Plan and Azure App Service that you can deploy Linux containers to.
 
 ## Deploying our infrastructure
 

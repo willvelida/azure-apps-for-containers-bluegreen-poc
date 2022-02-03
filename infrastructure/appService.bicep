@@ -19,6 +19,29 @@ param dockerUsername string
 @description('The docker image and tag')
 param dockerImageAndTag string = '/hellobluegreenwebapp:latest'
 
+var appSettings = [
+  {
+    name: 'DOCKER_REGISTRY_SERVER_URL'
+    value: 'https://${acrName}.azurecr.io'
+  }
+  {
+    name: 'DOCKER_REGISTRY_SERVER_USERNAME'
+    value: dockerUsername
+  }
+  {
+    name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+    value: containerRegistry.listCredentials().passwords[0].value
+  }
+  {
+    name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
+    value: 'false'
+  }
+  {
+    name: 'WEBSITES_PORT'
+    value: '80'
+  }
+]
+
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
   name: acrName
 }
@@ -30,28 +53,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   properties: {
     serverFarmId: serverFarmId
     siteConfig: {
-      appSettings: [
-        {
-          name: 'DOCKER_REGISTRY_SERVER_URL'
-          value: 'https://${acrName}.azurecr.io'
-        }
-        {
-          name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-          value: dockerUsername
-        }
-        {
-          name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-          value: containerRegistry.listCredentials().passwords[0].value
-        }
-        {
-          name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
-          value: 'false'
-        }
-        {
-          name: 'WEBSITES_PORT'
-          value: '80'
-        }
-      ]
+      appSettings: appSettings
       linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/${dockerImageAndTag}'
     }
   }
@@ -66,28 +68,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     properties: {
       serverFarmId: serverFarmId
       siteConfig: {
-        appSettings: [
-          {
-            name: 'DOCKER_REGISTRY_SERVER_URL'
-            value: 'https://${acrName}.azurecr.io'
-          }
-          {
-            name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-            value: dockerUsername
-          }
-          {
-            name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-            value: containerRegistry.listCredentials().passwords[0].value
-          }
-          {
-            name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
-            value: 'false'
-          }
-          {
-            name: 'WEBSITES_PORT'
-            value: '80'
-          }
-        ]
+        appSettings: appSettings
       }
     }
     identity: {
