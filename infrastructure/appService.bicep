@@ -19,6 +19,9 @@ param dockerUsername string
 @description('The docker image and tag')
 param dockerImageAndTag string = '/hellobluegreenwebapp:latest'
 
+// This is the ACR Pull Role Definition Id: https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#acrpull
+var acrPullRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
+
 var appSettings = [
   {
     name: 'DOCKER_REGISTRY_SERVER_URL'
@@ -74,5 +77,25 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     identity: {
       type: 'SystemAssigned'
     }
+  }
+}
+
+resource appServiceAcrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  scope: containerRegistry
+  name: guid(containerRegistry.id, appService.id, acrPullRoleDefinitionId)
+  properties: {
+    principalId: appService.identity.principalId
+    roleDefinitionId: acrPullRoleDefinitionId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+resource appServiceSlotAcrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
+  scope: containerRegistry
+  name: guid(containerRegistry.id, appService::blueSlot.id, acrPullRoleDefinitionId)
+  properties: {
+    principalId: appService::blueSlot.identity.principalId
+    roleDefinitionId: acrPullRoleDefinitionId
+    principalType: 'ServicePrincipal'
   }
 }
