@@ -1,10 +1,6 @@
 name: Deploy Web App to Container Registry
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 defaults:
@@ -30,8 +26,8 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     - run: |
-        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
-        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
 
   deploy-to-blue-slot:
     needs: build-container-image
@@ -49,7 +45,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'velidacontainerwebapp'
-        images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:${{ github.sha }}
+        images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
         slot-name: 'blue'
 
   deploy-to-green-slot:
