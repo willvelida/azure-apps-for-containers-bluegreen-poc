@@ -47,6 +47,10 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
           name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
           value: 'false'
         }
+        {
+          name: 'WEBSITES_PORT'
+          value: '80'
+        }
       ]
       linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/${dockerImageAndTag}'
     }
@@ -78,6 +82,10 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
           {
             name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
             value: 'false'
+          }
+          {
+            name: 'WEBSITES_PORT'
+            value: '80'
           }
         ]
       }
