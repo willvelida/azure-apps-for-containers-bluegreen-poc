@@ -65,4 +65,4 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az webapp deployment slot swap --slot 'production' --resource-group ${{ secrets.AZURE_RG }} --target-slot 'blue' --name 'velidacontainerwebapp'
+          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name 'velidacontainerwebapp'
