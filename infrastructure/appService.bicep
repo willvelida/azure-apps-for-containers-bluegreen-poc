@@ -13,6 +13,7 @@ param serverFarmId string
 resource appService 'Microsoft.Web/sites@2021-02-01' = {
   name: appServiceName
   location: appServiceLocation
+  kind: 'app,linux,container'
   properties: {
     serverFarmId: serverFarmId
   }
@@ -23,6 +24,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
   resource blueSlot 'slots' = {
     name: appServiceSlotName
     location: appServiceLocation
+    kind: 'app,linux,container'
     properties: {
       serverFarmId: serverFarmId
     }
