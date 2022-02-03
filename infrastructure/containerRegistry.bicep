@@ -5,6 +5,12 @@ param greenSlotName string
 param blueSlotName string
 
 var managedIdentityName = 'kenshobluegreenpocsp'
+var actions = [
+  'Microsoft.Authorization/roleAssignments/write'
+]
+var notActions = []
+var roleName = 'Role Assigment Writer'
+var roleDescription = 'Allows the resource to write role assignments'
 
 resource greenSlot 'Microsoft.Web/sites@2021-02-01' existing = {
   name: greenSlotName
@@ -22,6 +28,24 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' =
   }
   identity: {
     type: 'SystemAssigned'
+  }
+}
+
+resource roleAssignmentWriteDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' = {
+  name: guid(subscription().id, string(actions), string(notActions))
+  properties: {
+    roleName: roleName
+    description: roleDescription
+    type: 'customRole'
+    permissions: [
+      {
+        actions: actions
+        notActions: notActions
+      }
+    ]
+    assignableScopes: [
+      managedIdentity.id
+    ]
   }
 }
 
