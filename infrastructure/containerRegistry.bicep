@@ -44,7 +44,7 @@ resource roleAssignmentWriteDefinition 'Microsoft.Authorization/roleDefinitions@
       }
     ]
     assignableScopes: [
-      managedIdentity.id
+      subscription().id
     ]
   }
 }
