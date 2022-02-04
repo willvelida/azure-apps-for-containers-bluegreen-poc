@@ -92,7 +92,7 @@ resource appServiceAcrPullRoleAssignment 'Microsoft.Authorization/roleAssignment
 
 resource appServiceSlotAcrPullRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   scope: containerRegistry
-  name: guid(containerRegistry.id, resourceId('Microsoft.Web/sites/slots', appServiceName, appServiceSlotName), acrPullRoleDefinitionId)
+  name: guid(containerRegistry.id, appService::blueSlot.id, acrPullRoleDefinitionId)
   properties: {
     principalId: appService::blueSlot.identity.principalId
     roleDefinitionId: acrPullRoleDefinitionId
