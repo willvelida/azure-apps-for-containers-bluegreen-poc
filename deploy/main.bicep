@@ -1,6 +1,5 @@
 param acrName string
 param acrSku string
-param dockerUsername string
 param appServicePlanName string
 param appServiceName string
 
@@ -35,6 +34,5 @@ module appService 'appService.bicep' = {
     serverFarmId: appServicePlan.outputs.appServicePlanId
     appServiceSlotName: appServiceSlotName
     acrName: acrName
-    dockerUsername: dockerUsername
   }
 }

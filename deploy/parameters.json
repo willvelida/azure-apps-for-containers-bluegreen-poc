@@ -13,9 +13,6 @@
         },
         "appServiceName": {
             "value": "velidacontainerwebapp"
-        },
-        "dockerUsername": {
-            "value": "velidaacr"
         }
     }
 }

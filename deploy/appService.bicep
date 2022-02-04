@@ -13,9 +13,6 @@ param serverFarmId string
 @description('Name of the Azure Container Registry that this App will pull images from')
 param acrName string
 
-@description('Username for the docker login')
-param dockerUsername string
-
 @description('The docker image and tag')
 param dockerImageAndTag string = '/hellobluegreenwebapp:latest'
 
@@ -23,18 +20,6 @@ param dockerImageAndTag string = '/hellobluegreenwebapp:latest'
 var acrPullRoleDefinitionId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7f951dda-4ed3-4680-a7ca-43fe172d538d')
 
 var appSettings = [
-  {
-    name: 'DOCKER_REGISTRY_SERVER_URL'
-    value: 'https://${acrName}.azurecr.io'
-  }
-  {
-    name: 'DOCKER_REGISTRY_SERVER_USERNAME'
-    value: dockerUsername
-  }
-  {
-    name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-    value: containerRegistry.listCredentials().passwords[0].value
-  }
   {
     name: 'WEBSITES_ENABLE_APP_SERVICE_STORAGE'
     value: 'false'
