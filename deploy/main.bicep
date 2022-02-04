@@ -4,7 +4,7 @@ param dockerUsername string
 param appServicePlanName string
 param appServiceName string
 
-var appServiceSlotName = '/blue'
+var appServiceSlotName = 'blue'
 
 param location string = resourceGroup().location
 
