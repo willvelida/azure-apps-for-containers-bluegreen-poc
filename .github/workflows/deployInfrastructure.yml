@@ -29,8 +29,8 @@ jobs:
         with:
           deploymentName: ${{ github.run_number }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./infrastructure/main.bicep
-          parameters: ./infrastructure/parameters.json
+          template: ./deploy/main.bicep
+          parameters: ./deploy/parameters.json
           deploymentMode: Validate
 
   preview:
@@ -46,7 +46,7 @@ jobs:
         name: Run what-if
         with:
           inlineScript: |
-            az deployment group what-if --resource-group ${{ secrets.AZURE_RG }} --template-file ./infrastructure/main.bicep --parameters ./infrastructure/parameters.json
+            az deployment group what-if --resource-group ${{ secrets.AZURE_RG }} --template-file ./deploy/main.bicep --parameters ./deploy/parameters.json
 
   deploy:
     runs-on: ubuntu-latest
@@ -64,6 +64,6 @@ jobs:
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ secrets.AZURE_RG }}
-          template: ./infrastructure/main.bicep
-          parameters: ./infrastructure/parameters.json
+          template: ./deploy/main.bicep
+          parameters: ./deploy/parameters.json
           failOnStdErr: false

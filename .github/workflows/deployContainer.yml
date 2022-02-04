@@ -5,7 +5,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./dotnet
+    working-directory: ./src
 
 jobs:
   build-container-image:
