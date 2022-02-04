@@ -48,7 +48,7 @@ jobs:
         images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
         slot-name: 'blue'
 
-  deploy-to-green-slot:
+  swap-to-green-slot:
     runs-on: ubuntu-latest
     environment: Dev
     needs: deploy-to-blue-slot
