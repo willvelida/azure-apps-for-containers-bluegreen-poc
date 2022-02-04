@@ -33,7 +33,7 @@ jobs:
       uses: Azure/container-scan@v0
       with:
         image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
-        severity-threshold: MEDIUM
+        severity-threshold: LOW
         run-quality-checks: true
 
   deploy-to-blue-slot:
