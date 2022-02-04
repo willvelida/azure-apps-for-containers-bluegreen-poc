@@ -18,6 +18,9 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' =
   sku: {
     name: registrySku
   }
+  properties: {
+    adminUserEnabled: true
+  }
   identity: {
     type: 'SystemAssigned'
   }
