@@ -1,4 +1,4 @@
-name: Deploy Web App to Container Registry
+name: Build and Deploy Container Image to App Service
 
 on:
   workflow_dispatch:
@@ -7,6 +7,7 @@ defaults:
   run:
     working-directory: ./src
 
+# Note: The use of :latest for the container image is not recommeded for production environments.
 jobs:
   build-container-image:
     runs-on: ubuntu-latest
@@ -30,11 +31,13 @@ jobs:
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
 
     # This task will scan your images for vulnerabilities.
+    # If any vulnerabilities are found that meet the severity-threshold, the pipeline will fail
+    # For more information, check out: https://github.com/Azure/container-scan
     #- name: Scan Image
       # uses: Azure/container-scan@v0
       # with:
         # image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
-        # severity-threshold: LOW
+        # severity-threshold: CRITICAL
         # run-quality-checks: true
 
   deploy-to-blue-slot:
