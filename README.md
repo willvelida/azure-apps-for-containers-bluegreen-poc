@@ -124,7 +124,44 @@ In this code snippet, we define a variable that specifies the AcrPull role defin
 
 With those resources defined, we can create our Role Assignment that is scoped to our Container Registry with the 'AcrPull' permissions.
 
-Once the 'AcrPull' role assignment has been created, we can define our deployment to our Blue slot job within our GitHub workflow:
+Within our App Service Bicep code, we also need to tell our App Service to use our Managed Identity Credentials to pull container images from our Container Registry (by setting the ```acrUseManagedIdentityCreds``` flag to ```true```). We can do so by defining our App Service in Bicep like so:
+
+```bicep
+resource appService 'Microsoft.Web/sites@2021-02-01' = {
+  name: appServiceName
+  location: appServiceLocation
+  kind: 'app,linux,container'
+  properties: {
+    serverFarmId: serverFarmId
+    siteConfig: {
+      appSettings: appSettings
+      acrUseManagedIdentityCreds: true
+      linuxFxVersion: 'DOCKER|${containerRegistry.properties.loginServer}/${dockerImageAndTag}'
+    }
+  }
+  identity: {
+    type: 'SystemAssigned'
+  }
+
+  resource blueSlot 'slots' = {
+    name: appServiceSlotName
+    location: appServiceLocation
+    kind: 'app,linux,container'
+    properties: {
+      serverFarmId: serverFarmId
+      siteConfig: {
+        acrUseManagedIdentityCreds: true
+        appSettings: appSettings
+      }
+    }
+    identity: {
+      type: 'SystemAssigned'
+    }
+  }
+}
+```
+
+Once the 'AcrPull' role assignment has been created and assigned to the App Service instance, we can define our deployment to our Blue slot job within our GitHub workflow:
 
 ```yaml
 deploy-to-blue-slot:
@@ -139,10 +176,16 @@ deploy-to-blue-slot:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Get App Name'
+      id: getwebappname
+      run: |
+        a=$(az webapp list -g ${{ secrets.AZURE_RG }} --query '[].{Name:name}' -o tsv)
+        echo "::set-output name=appName::$a"
+
     - name: 'Deploy to Blue Slot'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: '<your-app-service-name>'
+        app-name: ${{ steps.getwebappname.outputs.appName }}
         images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
         slot-name: 'blue'
 ```
@@ -175,11 +218,17 @@ swap-to-green-slot:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Get App Name'
+      id: getwebappname
+      run: |
+        a=$(az webapp list -g ${{ secrets.AZURE_RG }} --query '[].{Name:name}' -o tsv)
+        echo "::set-output name=appName::$a"
+
     - name: 'Swap to green slot'
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name '<your-app-service-name>'
+          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name ${{ steps.getwebappname.outputs.appName }}
 ```
 
 In this job, we use environments to manually approve the deployment to our production slot provided that our deployment to the blue slot was successful. We can assign a user or users that need to approve the deployment before this job runs.
