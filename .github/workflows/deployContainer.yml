@@ -55,7 +55,7 @@ jobs:
     - name: 'Deploy to Blue Slot'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'velidacontainerwebapp'
+        app-name: ${{ secrets.WEB_APP_NAME }}
         images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
         slot-name: 'blue'
 
@@ -76,4 +76,4 @@ jobs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name 'velidacontainerwebapp'
+          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WEB_APP_NAME }}
