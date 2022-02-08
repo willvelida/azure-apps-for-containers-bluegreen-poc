@@ -19,7 +19,7 @@ Note: *Replace <> with your own values.*
 Once you have created your resource group, we need to generate deployment credentials. The GitHub Action that we use for our deployment needs to run under an identity. We can use the Azure CLI to create a service principal for the identity.
 
 ```bash
-az ad sp create-for-rbac --name yourApp --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/exampleRG --sdk-auth
+az ad sp create-for-rbac --name yourApp --role owner --scopes /subscriptions/{subscription-id}/resourceGroups/exampleRG --sdk-auth
 ```
 
 Replace the ```--name``` parameter with the name of your application. The scope of the service principal is limited to the resource group. The output of this command will generate a JSON object with the role assignment credentials that provide access. Copy the JSON Object output:

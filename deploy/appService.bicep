@@ -42,7 +42,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     serverFarmId: serverFarmId
     siteConfig: {
       appSettings: appSettings
-      linuxFxVersion: 'DOCKER|${acrName}.azurecr.io/${dockerImageAndTag}'
+      linuxFxVersion: 'DOCKER|${containerRegistry.properties.loginServer}.azurecr.io/${dockerImageAndTag}'
     }
   }
   identity: {

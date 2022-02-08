@@ -1,11 +1,12 @@
 param appServicePlanName string
 param appServicePlanLocation string
+param appServicePlanSkuName string
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: appServicePlanName
   location: appServicePlanLocation
   sku: {
-    name: 'S1'
+    name: appServicePlanSkuName
   }
   kind: 'linux'
   properties: {
