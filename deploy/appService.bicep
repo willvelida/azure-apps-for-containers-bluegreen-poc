@@ -32,6 +32,10 @@ var appSettings = [
     name: 'DOCKER_REGISTRY_SERVER_URL'
     value: 'https://${containerRegistry.properties.loginServer}'
   }
+  {
+    name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
+    value: containerRegistry.listCredentials().passwords[0].value
+  }
 ]
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
