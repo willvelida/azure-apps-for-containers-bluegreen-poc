@@ -47,7 +47,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     siteConfig: {
       appSettings: appSettings
       acrUseManagedIdentityCreds: true
-      linuxFxVersion: 'DOCKER|${containerRegistry.properties.loginServer}.azurecr.io/${dockerImageAndTag}'
+      linuxFxVersion: 'DOCKER|${containerRegistry.properties.loginServer}/${dockerImageAndTag}'
     }
   }
   identity: {
