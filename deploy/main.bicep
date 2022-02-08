@@ -2,7 +2,7 @@ param webAppName string = uniqueString(resourceGroup().id)
 param acrName string = toLower('acr${webAppName}')
 param acrSku string
 param appServicePlanName string = toLower('asp-${webAppName}')
-param appServiceName string = toLower('asp-$${webAppName}')
+param appServiceName string = toLower('asp-${webAppName}')
 param appServicePlanSkuName string
 
 var appServiceSlotName = 'blue'
