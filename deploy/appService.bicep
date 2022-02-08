@@ -32,10 +32,6 @@ var appSettings = [
     name: 'DOCKER_REGISTRY_SERVER_URL'
     value: 'https://${containerRegistry.properties.loginServer}'
   }
-  {
-    name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
-    value: containerRegistry.listCredentials().passwords[0].value
-  }
 ]
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
@@ -50,6 +46,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     serverFarmId: serverFarmId
     siteConfig: {
       appSettings: appSettings
+      acrUseManagedIdentityCreds: true
       linuxFxVersion: 'DOCKER|${containerRegistry.properties.loginServer}.azurecr.io/${dockerImageAndTag}'
     }
   }
@@ -64,6 +61,7 @@ resource appService 'Microsoft.Web/sites@2021-02-01' = {
     properties: {
       serverFarmId: serverFarmId
       siteConfig: {
+        acrUseManagedIdentityCreds: true
         appSettings: appSettings
       }
     }
