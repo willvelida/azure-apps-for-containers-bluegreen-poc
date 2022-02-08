@@ -3,7 +3,7 @@ param acrName string = toLower('acr-${webAppName}')
 param acrSku string
 param appServicePlanName string = toLower('asp-${webAppName}')
 param appServiceName string = toLower('asp-$${webAppName}')
-param appServiceSkuName string
+param appServicePlanSkuName string
 
 var appServiceSlotName = 'blue'
 
@@ -25,7 +25,7 @@ module appServicePlan 'appServicePlan.bicep' = {
   params: {
     appServicePlanLocation: location
     appServicePlanName: appServicePlanName
-    appServicePlanSkuName: appServiceSkuName
+    appServicePlanSkuName: appServicePlanSkuName
   }
 }
 
