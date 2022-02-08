@@ -52,10 +52,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Get App Name'
+      id: getwebappname
+      run: |
+        a=$(az webapp list -g ${{ secrets.AZURE_RG }} --query '[].{Name:name}' -o tsv)
+        echo "::set-output name=appName::$a"
+
     - name: 'Deploy to Blue Slot'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ secrets.WEB_APP_NAME }}
+        app-name: ${{ steps.getwebappname.outputs.appName }}
         images: ${{ secrets.REGISTRY_LOGIN_SERVER }}/hellobluegreenwebapp:latest
         slot-name: 'blue'
 
@@ -72,8 +78,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: 'Get App Name'
+      id: getwebappname
+      run: |
+        a=$(az webapp list -g ${{ secrets.AZURE_RG }} --query '[].{Name:name}' -o tsv)
+        echo "::set-output name=appName::$a"
+
     - name: 'Swap to green slot'
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name ${{ secrets.WEB_APP_NAME }}
+          az webapp deployment slot swap --slot 'blue' --resource-group ${{ secrets.AZURE_RG }} --name ${{ steps.getwebappname.outputs.appName }}
