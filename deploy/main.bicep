@@ -4,6 +4,7 @@ param acrSku string
 param appServicePlanName string = toLower('asp-${webAppName}')
 param appServiceName string = toLower('asp-${webAppName}')
 param appServicePlanSkuName string
+param appServicePlanInstanceCount int
 
 var appServiceSlotName = 'blue'
 
@@ -26,6 +27,7 @@ module appServicePlan 'appServicePlan.bicep' = {
     appServicePlanLocation: location
     appServicePlanName: appServicePlanName
     appServicePlanSkuName: appServicePlanSkuName
+    appServicePlanCapacity: appServicePlanInstanceCount
   }
 }
 

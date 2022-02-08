@@ -7,6 +7,9 @@
         },
         "appServicePlanSkuName": {
             "value": "S1"
+        },
+        "appServicePlanInstanceCount": {
+            "value": 1
         }
     }
 }
