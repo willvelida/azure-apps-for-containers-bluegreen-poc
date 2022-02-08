@@ -28,6 +28,10 @@ var appSettings = [
     name: 'WEBSITES_PORT'
     value: '80'
   }
+  {
+    name: 'DOCKER_REGISTRY_SERVER_URL'
+    value: 'https://${containerRegistry.properties.loginServer}'
+  }
 ]
 
 resource containerRegistry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
